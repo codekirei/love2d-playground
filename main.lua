@@ -4,6 +4,18 @@
 local inspect = require 'lib.inspect'
 
 --[[--------------------------------------------------------
+      LOVE2D Abbreviations
+--]]--------------------------------------------------------
+la = love.audio
+lg = love.graphics
+li = love.image
+lk = love.keyboard
+lm = love.mouse
+ln = love.math -- "numbers"
+lp = love.phsyics
+lw = love.window
+
+--[[--------------------------------------------------------
       Top Level Vars
 --]]--------------------------------------------------------
 local screen = {}
@@ -15,8 +27,8 @@ local char = {}
 --]]--------------------------------------------------------
 function love.load()
 
-  screen.x, screen.y = love.window.getDesktopDimensions(1)
-  window.x, window.y, window.flags = love.window.getMode()
+  screen.x, screen.y = lw.getDesktopDimensions(1)
+  window.x, window.y, window.flags = lw.getMode()
   print(inspect(window))
   char.size = 100
   char.x = window.x / 2 - char.size / 2
@@ -35,16 +47,16 @@ function love.draw()
   end
 
   -- background
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.rectangle(
+  lg.setColor(255, 255, 255)
+  lg.rectangle(
     'fill',
     0, 0,
     window.x, window.y
   )
 
   -- character
-  love.graphics.setColor(char.color)
-  love.graphics.rectangle(
+  lg.setColor(char.color)
+  lg.rectangle(
     'fill',
     char.x, char.y,
     char.size, char.size
