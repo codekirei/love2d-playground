@@ -21,6 +21,7 @@ lw = love.window
 local screen = {}
 local window = {}
 local char = {}
+local speed = 10
 
 --[[--------------------------------------------------------
       LOVE.load
@@ -29,11 +30,12 @@ function love.load()
 
   screen.x, screen.y = lw.getDesktopDimensions(1)
   window.x, window.y, window.flags = lw.getMode()
-  print(inspect(window))
   char.size = 100
   char.x = window.x / 2 - char.size / 2
   char.y = window.y / 2 - char.size / 2
   char.color = { 0, 0, 0 }
+
+  love.keyboard.setKeyRepeat(true)
 
 end
 
@@ -61,5 +63,23 @@ function love.draw()
     char.x, char.y,
     char.size, char.size
   )
+
+end
+
+--[[--------------------------------------------------------
+      LOVE.keypress
+--]]--------------------------------------------------------
+function love.keypressed(key, scancode, isrepeat)
+
+  function moveChar(axis, px)
+    char[axis] = char[axis] + px
+  end
+
+  -- this should be in love.update with love.keyboard.isdown
+  if     key == 'w' then moveChar('y', -1 * speed)
+  elseif key == 'a' then moveChar('x', -1 * speed)
+  elseif key == 's' then moveChar('y', speed)
+  elseif key == 'd' then moveChar('x', speed)
+  end
 
 end
