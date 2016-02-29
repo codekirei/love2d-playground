@@ -6,15 +6,18 @@ local inspect = require 'lib.inspect'
 --[[--------------------------------------------------------
       Top Level Vars
 --]]--------------------------------------------------------
+local screen = {}
 local window = {}
 local char = {}
 
 --[[--------------------------------------------------------
-      Load Fn
+      LOVE.load
 --]]--------------------------------------------------------
 function love.load()
 
-  window.x, window.y = love.window.getDesktopDimensions(1)
+  screen.x, screen.y = love.window.getDesktopDimensions(1)
+  window.x, window.y, window.flags = love.window.getMode()
+  print(inspect(window))
   char.size = 100
   char.x = window.x / 2 - char.size / 2
   char.y = window.y / 2 - char.size / 2
@@ -23,9 +26,13 @@ function love.load()
 end
 
 --[[--------------------------------------------------------
-      Draw Fn
+      LOVE.draw
 --]]--------------------------------------------------------
 function love.draw()
+
+  function love.resize(w, h)
+    window.x, window.y = w, h
+  end
 
   -- background
   love.graphics.setColor(255, 255, 255)
