@@ -20,8 +20,15 @@ lw = love.window
 --]]--------------------------------------------------------
 local screen = {}
 local window = {}
-local char = {}
+local char = {max = {}}
+local function calculateCharMax(windowX, windowY)
+  char.max.x = windowX - char.size
+  char.max.y = windowY - char.size
+end
 local speed = 500
+
+-- start in fullscreen by default
+local fullscreen = love.window.setFullscreen(true)
 
 --[[--------------------------------------------------------
       LOVE.load
@@ -33,6 +40,7 @@ function love.load()
   char.size = 100
   char.x = window.x / 2 - char.size / 2
   char.y = window.y / 2 - char.size / 2
+  calculateCharMax(window.x, window.y)
   char.color = { 0, 0, 0 }
 
   love.keyboard.setKeyRepeat(true)
@@ -40,13 +48,16 @@ function love.load()
 end
 
 --[[--------------------------------------------------------
+      LOVE.resize
+--]]--------------------------------------------------------
+function love.resize(w, h)
+  calculateCharMax(w, h)
+end
+
+--[[--------------------------------------------------------
       LOVE.draw
 --]]--------------------------------------------------------
 function love.draw()
-
-  function love.resize(w, h)
-    window.x, window.y = w, h
-  end
 
   -- background
   lg.setColor(255, 255, 255)
@@ -82,6 +93,12 @@ function love.update(dt)
     if lk.isDown(t.key) then
       char[t.axis] = char[t.axis] + speed * dt * t.sign
     end
+  end
+
+  -- constrain movement to window
+  for _,v in ipairs ({'x', 'y'}) do
+    if char[v] > char.max[v] then char[v] = char.max[v] end
+    if char[v] < 0 then char[v] = 0 end
   end
 
 end
