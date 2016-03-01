@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------
       Modules
 --]]--------------------------------------------------------
-local inspect = require 'lib.inspect'
+-- local inspect = require 'lib.inspect'
 
 --[[--------------------------------------------------------
       LOVE2D Abbreviations
@@ -64,6 +64,18 @@ function love.draw()
     char.size, char.size
   )
 
+end
+
+--[[--------------------------------------------------------
+      LOVE.update
+--]]--------------------------------------------------------
+function love.update(dt)
+  local keymap = {
+    w = { axis = 'y', delta = -1 * speed },
+    a = { axis = 'x', delta = -1 * speed },
+    s = { axis = 'y', delta = speed },
+    d = { axis = 'x', delta = speed }
+  }
 end
 
 --[[--------------------------------------------------------
