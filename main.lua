@@ -21,7 +21,7 @@ lw = love.window
 local screen = {}
 local window = {}
 local char = {}
-local speed = 10
+local speed = 500
 
 --[[--------------------------------------------------------
       LOVE.load
@@ -70,28 +70,24 @@ end
       LOVE.update
 --]]--------------------------------------------------------
 function love.update(dt)
+
+  -- move character around
   local keymap = {
-    w = { axis = 'y', delta = -1 * speed },
-    a = { axis = 'x', delta = -1 * speed },
-    s = { axis = 'y', delta = speed },
-    d = { axis = 'x', delta = speed }
+    { key = 'w', axis = 'y', sign = -1 },
+    { key = 'a', axis = 'x', sign = -1 },
+    { key = 's', axis = 'y', sign = 1 },
+    { key = 'd', axis = 'x', sign = 1 }
   }
+  for _,t in ipairs (keymap) do
+    if lk.isDown(t.key) then
+      char[t.axis] = char[t.axis] + speed * dt * t.sign
+    end
+  end
+
 end
 
 --[[--------------------------------------------------------
       LOVE.keypress
 --]]--------------------------------------------------------
-function love.keypressed(key, scancode, isrepeat)
-
-  function moveChar(axis, px)
-    char[axis] = char[axis] + px
-  end
-
-  -- this should be in love.update with love.keyboard.isdown
-  if     key == 'w' then moveChar('y', -1 * speed)
-  elseif key == 'a' then moveChar('x', -1 * speed)
-  elseif key == 's' then moveChar('y', speed)
-  elseif key == 'd' then moveChar('x', speed)
-  end
-
-end
+-- function love.keypressed(key, scancode, isrepeat)
+-- end
